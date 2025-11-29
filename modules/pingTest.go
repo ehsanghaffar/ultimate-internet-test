@@ -1,23 +1,52 @@
 package modules
 
 import (
-	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"os/signal"
 
+	"github.com/ehsanghaffar/ultimate-internet-test/config"
 	"github.com/ehsanghaffar/ultimate-internet-test/utils"
 	"github.com/go-ping/ping"
 )
 
-func PingCheck(domain string) {
+// PingCheck performs a ping test on the given domain and returns the result.
+// It accepts a config parameter for ping configuration and returns a PingTest result with any errors.
+// The function sends ping packets as configured and collects statistics about packet loss and timing.
+//
+// Parameters:
+//   - domain: The domain or IP address to ping
+//   - cfg: Configuration containing ping count and other settings
+//
+// Returns:
+//   - *PingTest: Pointer to PingTest struct containing ping statistics and any errors
+//
+// Example:
+//
+//	cfg := config.New()
+//	result := PingCheck("example.com", cfg)
+//	if result.Error == "" {
+//	    log.Printf("Packets: %d sent, %d received, %.2f%% loss\n",
+//	        result.Transmitted, result.Received, result.Loss)
+//	}
+func PingCheck(domain string, cfg *config.Config) *utils.PingTest {
+	result := &utils.PingTest{
+		URL: domain,
+	}
+
 	pinger, err := ping.NewPinger(domain)
 	if err != nil {
-		panic(err)
+		result.Error = err.Error()
+		log.Printf("Failed to create pinger for %s: %v\n", domain, err)
+		fmt.Println("------------------------------------------------------------")
+		return result
 	}
-	// Listen for Ctrl-C.
+
+	// Set ping count from config
+	pinger.Count = cfg.PingCount
+
+	// Listen for Ctrl-C
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt)
 	go func() {
@@ -29,11 +58,6 @@ func PingCheck(domain string) {
 	pinger.OnRecv = func(pkt *ping.Packet) {
 		log.Printf("%d bytes from %s: icmp_seq=%d time=%v\n",
 			pkt.Nbytes, pkt.IPAddr, pkt.Seq, pkt.Rtt)
-
-		// TODO: find best practice for this
-		if pkt.Seq >= 5 {
-			pinger.Stop()
-		}
 	}
 
 	pinger.OnDuplicateRecv = func(pkt *ping.Packet) {
@@ -47,47 +71,21 @@ func PingCheck(domain string) {
 			stats.PacketsSent, stats.PacketsRecv, stats.PacketLoss)
 		fmt.Printf("round-trip min/avg/max/stddev = %v/%v/%v/%v\n",
 			stats.MinRtt, stats.AvgRtt, stats.MaxRtt, stats.StdDevRtt)
-		// TODO
-		saveToJson(&utils.PingTest{
-			URL:         stats.Addr,
-			Transmitted: stats.PacketsSent,
-			Received:    stats.PacketsRecv,
-			Loss:        stats.PacketLoss,
-		})
+
+		// Update result with final statistics
+		result.Transmitted = stats.PacketsSent
+		result.Received = stats.PacketsRecv
+		result.Loss = stats.PacketLoss
 	}
 
 	fmt.Printf("PING %s (%s):\n", pinger.Addr(), pinger.IPAddr())
-	err = pinger.Run()
-	if err != nil {
-		panic(err)
+	if err := pinger.Run(); err != nil {
+		result.Error = err.Error()
+		log.Printf("Ping check failed for %s: %v\n", domain, err)
+		fmt.Println("------------------------------------------------------------")
+		return result
 	}
 
-}
-
-// Save ping result to the json file
-// Note: this is ugly code, need to improve
-// TODO: Find Best Practice and Improve it
-
-func saveToJson(pingRes *utils.PingTest) {
-
-	jsonFields := utils.Tests{}
-
-	vpnFields, err := ioutil.ReadFile("data.json")
-	if err != nil {
-		os.Exit(1)
-	}
-	unmarshalErr := json.Unmarshal(vpnFields, &jsonFields)
-	if unmarshalErr != nil {
-		fmt.Println("Json unmarshalErr: ", unmarshalErr)
-	}
-
-	jsonFields.PingTest = *pingRes
-
-	pingTestResult, marshalErr := json.MarshalIndent(jsonFields, "", "  ")
-	if marshalErr != nil {
-		fmt.Println("Json marshalErr: ", marshalErr)
-	}
-
-	ioutil.WriteFile("data.json", pingTestResult, 0644)
-
+	fmt.Println("------------------------------------------------------------")
+	return result
 }
