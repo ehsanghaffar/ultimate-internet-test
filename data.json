@@ -1,10 +1,68 @@
 {
+  "http_tests": [
+    {
+      "url": "http://www.google.com/",
+      "status": "200 OK",
+      "proto": "HTTP/1.1",
+      "response_length": 17669
+    },
+    {
+      "url": "https://www.google.com/",
+      "status": "200 OK",
+      "proto": "HTTP/2.0",
+      "tls_version": "772",
+      "cipher_suite": "4865",
+      "server_name": "www.google.com",
+      "response_length": 17725
+    },
+    {
+      "url": "https://leader.ir/",
+      "status": "301 Moved Permanently",
+      "proto": "HTTP/1.1",
+      "tls_version": "772",
+      "cipher_suite": "4865",
+      "server_name": "leader.ir"
+    },
+    {
+      "url": "https://www.facebook.com/",
+      "status": "200 OK",
+      "proto": "HTTP/2.0",
+      "tls_version": "772",
+      "cipher_suite": "4865",
+      "server_name": "www.facebook.com",
+      "response_length": 71680
+    },
+    {
+      "url": "https://www.youtube.com/",
+      "status": "200 OK",
+      "proto": "HTTP/2.0",
+      "tls_version": "772",
+      "cipher_suite": "4865",
+      "server_name": "www.youtube.com",
+      "response_length": 719118
+    }
+  ],
+  "speed_tests": [
+    {
+      "url": "https://ehsanghaffarii.ir",
+      "download_mbps": 0.20057212691531479,
+      "elapsed_time": 618510667,
+      "bytes_received": 15507
+    },
+    {
+      "url": "https://google.com",
+      "download_mbps": 0.13849755496347807,
+      "elapsed_time": 1019512583,
+      "bytes_received": 17650
+    }
+  ],
   "vpn_test": {
     "status": "Using VPN or proxy."
   },
   "ping_test": {
-    "url": "www.google.com",
-    "transmitted_packets": 6,
-    "received_packets": 6
-  }
+    "url": "www.ehsanghaffarii.ir",
+    "transmitted_packets": 5,
+    "loss_packets": 100
+  },
+  "timestamp": "2025-11-29T21:44:54.557319+03:30"
 }

@@ -1,4 +1,4 @@
-# All-in-one Internet Test
+# Unified Internet Testing Tool in Go
 
 A comprehensive Go application for network diagnostics and internet connectivity testing. Performs parallel HTTP, speed, VPN detection, and ping tests with structured result storage and robust error handling.
 
@@ -27,14 +27,14 @@ A comprehensive Go application for network diagnostics and internet connectivity
 
 ```bash
 # Clone the repository
-git clone https://github.com/ehsanghaffar/all-internet-tests.git
-cd all-internet-tests
+git clone https://github.com/ehsanghaffar/ultimate-internet-test.git
+cd ultimate-internet-test
 
 # Build
-go build -o all-internet-tests
+go build -o ultimate-internet-test
 
 # Run
-./all-internet-tests
+./ultimate-internet-test
 ```
 
 ### Usage
@@ -44,7 +44,7 @@ go build -o all-internet-tests
 go run .
 
 # Build and execute binary
-go build && ./all-internet-tests
+go build && ./ultimate-internet-test
 
 # Run specific URL tests
 go run . https://example.com https://test.com
@@ -137,7 +137,7 @@ See [Configuration Constants](docs/API.md#constants) for all options.
 ### Build
 
 ```bash
-go build -o all-internet-tests
+go build -o ultimate-internet-test
 ```
 
 ### Test
@@ -190,8 +190,8 @@ See [Architecture Documentation](docs/ARCHITECTURE.md) for detailed information.
 sudo go run .
 
 # Or set capabilities
-sudo setcap cap_net_raw=+ep ./all-internet-tests
-./all-internet-tests
+sudo setcap cap_net_raw=+ep ./ultimate-internet-test
+./ultimate-internet-test
 ```
 
 Network Timeouts
@@ -225,4 +225,4 @@ This project is licensed under the MIT License — see [LICENSE](https://choosea
 ## Resources
 
 - [Go Documentation](https://golang.org/doc/)
-- [Project Issues](https://github.com/ehsanghaffar/all-internet-tests/issues)
+- [Project Issues](https://github.com/ehsanghaffar/ultimate-internet-test/issues)

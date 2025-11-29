@@ -1,6 +1,6 @@
 # Documentation Index
 
-Welcome to the all-internet-tests documentation. This project provides comprehensive network diagnostics through parallel testing of HTTP connectivity, speed, VPN detection, and ping.
+Welcome to the ultimate-internet-test documentation. This project provides comprehensive network diagnostics through parallel testing of HTTP connectivity, speed, VPN detection, and ping.
 
 ## Quick Navigation
 
@@ -119,10 +119,10 @@ All tests generate structured JSON results:
 ## Installation
 
 ```bash
-git clone https://github.com/ehsanghaffar/all-internet-tests.git
-cd all-internet-tests
+git clone https://github.com/ehsanghaffar/ultimate-internet-test.git
+cd ultimate-internet-test
 go build
-./all-internet-tests
+./ultimate-internet-test
 ```
 
 See [QUICK_REFERENCE.md](QUICK_REFERENCE.md#installation--setup) for more options.
@@ -133,8 +133,8 @@ See [QUICK_REFERENCE.md](QUICK_REFERENCE.md#installation--setup) for more option
 
 ```bash
 # Clone and navigate
-git clone https://github.com/ehsanghaffar/all-internet-tests.git
-cd all-internet-tests
+git clone https://github.com/ehsanghaffar/ultimate-internet-test.git
+cd ultimate-internet-test
 
 # Install dependencies
 go mod download
@@ -146,7 +146,7 @@ go test ./...
 go build
 
 # Run
-./all-internet-tests
+./ultimate-internet-test
 ```
 
 See [DEVELOPMENT.md](DEVELOPMENT.md#getting-started) for detailed setup.
@@ -155,7 +155,7 @@ See [DEVELOPMENT.md](DEVELOPMENT.md#getting-started) for detailed setup.
 
 ```bash
 # Build for all platforms
-GOOS=linux GOARCH=amd64 go build -o all-internet-tests-linux
+GOOS=linux GOARCH=amd64 go build -o ultimate-internet-test-linux
 
 # Run tests with coverage
 go test -cover ./...
@@ -175,13 +175,13 @@ See [QUICK_REFERENCE.md - Building](QUICK_REFERENCE.md#building) for more comman
 ### Run All Tests
 
 ```bash
-./all-internet-tests
+./ultimate-internet-test
 ```
 
 ### Test Specific URLs
 
 ```bash
-./all-internet-tests https://example.com https://test.com
+./ultimate-internet-test https://example.com https://test.com
 ```
 
 ### Check Results
@@ -261,7 +261,7 @@ We welcome contributions! See [DEVELOPMENT.md - Contributing](DEVELOPMENT.md#con
 ## Support
 
 - 📧 Email: <ghafari.5000@gmail.com>
-- 🐙 GitHub: <https://github.com/ehsanghaffar/all-internet-tests>
+- 🐙 GitHub: <https://github.com/ehsanghaffar/ultimate-internet-test>
 - 🌐 Website: <https://ehsanghaffarii.ir>
 
 ## License

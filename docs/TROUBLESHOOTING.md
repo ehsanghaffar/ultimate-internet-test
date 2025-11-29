@@ -44,8 +44,8 @@ sudo go run .
 **Solution Option 2 - Set Linux capabilities:**
 
 ```bash
-sudo setcap cap_net_raw=+ep ./all-internet-tests
-./all-internet-tests
+sudo setcap cap_net_raw=+ep ./ultimate-internet-test
+./ultimate-internet-test
 ```
 
 **Solution Option 3 - Use macOS/Windows:**
@@ -289,16 +289,16 @@ Run with appropriate privileges:
 sudo go run .
 
 # Or set capabilities once
-go build -o all-internet-tests
-sudo setcap cap_net_raw=+ep ./all-internet-tests
-./all-internet-tests
+go build -o ultimate-internet-test
+sudo setcap cap_net_raw=+ep ./ultimate-internet-test
+./ultimate-internet-test
 ```
 
 ### Getting Help
 
 If issues persist:
 
-1. [**Check existing issues:**](https://github.com/ehsanghaffar/all-internet-tests/issues)
+1. [**Check existing issues:**](https://github.com/ehsanghaffar/ultimate-internet-test/issues)
 2. **Review logs:** Capture full output with timestamps
 3. **Provide system info:**
 

@@ -4,14 +4,14 @@
 
 ```bash
 # Clone
-git clone https://github.com/ehsanghaffar/all-internet-tests.git
-cd all-internet-tests
+git clone https://github.com/ehsanghaffar/ultimate-internet-test.git
+cd ultimate-internet-test
 
 # Build
-go build -o all-internet-tests
+go build -o ultimate-internet-test
 
 # Run
-./all-internet-tests
+./ultimate-internet-test
 ```
 
 ## Basic Usage
@@ -21,13 +21,13 @@ go build -o all-internet-tests
 go run .
 
 # Build and run
-go build && ./all-internet-tests
+go build && ./ultimate-internet-test
 
 # Test specific URLs
 go run . https://example.com https://test.com
 
 # Redirect output
-./all-internet-tests > results.txt
+./ultimate-internet-test > results.txt
 
 # With elevated privileges (for ping)
 sudo go run .
@@ -139,16 +139,16 @@ go test -bench=. ./...
 go build
 
 # Production build (smaller)
-go build -ldflags="-s -w" -o all-internet-tests
+go build -ldflags="-s -w" -o ultimate-internet-test
 
 # Cross-compile for Linux
-GOOS=linux GOARCH=amd64 go build -o all-internet-tests-linux
+GOOS=linux GOARCH=amd64 go build -o ultimate-internet-test-linux
 
 # Cross-compile for Windows
-GOOS=windows GOARCH=amd64 go build -o all-internet-tests.exe
+GOOS=windows GOARCH=amd64 go build -o ultimate-internet-test.exe
 
 # Cross-compile for macOS
-GOOS=darwin GOARCH=amd64 go build -o all-internet-tests-macos
+GOOS=darwin GOARCH=amd64 go build -o ultimate-internet-test-macos
 ```
 
 ## Troubleshooting
@@ -225,10 +225,10 @@ Functions:
 
 ```bash
 # Build and run
-go build && ./all-internet-tests
+go build && ./ultimate-internet-test
 
 # Run with specific URLs
-./all-internet-tests https://example.com https://test.com
+./ultimate-internet-test https://example.com https://test.com
 
 # Run tests
 go test ./... -v

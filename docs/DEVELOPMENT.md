@@ -12,14 +12,14 @@
 
 ```bash
 # Clone the repository
-git clone https://github.com/ehsanghaffar/all-internet-tests.git
-cd all-internet-tests
+git clone https://github.com/ehsanghaffar/ultimate-internet-test.git
+cd ultimate-internet-test
 
 # Install dependencies
 go mod download
 
 # Build the project
-go build -o all-internet-tests
+go build -o ultimate-internet-test
 
 # Run tests
 go test ./...
@@ -58,7 +58,7 @@ go build
 
 ```bash
 # Build optimized binary
-go build -ldflags="-s -w" -o all-internet-tests
+go build -ldflags="-s -w" -o ultimate-internet-test
 ```
 
 ### Run Directly
@@ -336,8 +336,8 @@ dlv debug
 sudo go run .
 
 # Or set capability on binary
-sudo setcap cap_net_raw=+ep ./all-internet-tests
-./all-internet-tests
+sudo setcap cap_net_raw=+ep ./ultimate-internet-test
+./ultimate-internet-test
 ```
 
 ### Network Timeout Errors

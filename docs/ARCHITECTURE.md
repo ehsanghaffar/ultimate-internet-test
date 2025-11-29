@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-The all-internet-tests project is a modular Go application designed to perform comprehensive network diagnostics. It follows a clean architecture with separation of concerns across functional domains.
+The ultimate internet testing tool project is a modular Go application designed to perform comprehensive network diagnostics. It follows a clean architecture with separation of concerns across functional domains.
 
 ## Architecture Layers
 
