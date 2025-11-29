@@ -213,10 +213,6 @@ See [Troubleshooting Guide](docs/TROUBLESHOOTING.md) for more solutions.
 - Configurable timeouts to prevent hanging
 - Minimal memory footprint with streaming I/O
 
-## License
-
-This project is licensed under the MIT License — see [LICENSE](https://choosealicense.com/licenses/mit/) for details.
-
 ## Authors and Contact
 
 - **Original Author**: [@ehsanghaffar](https://github.com/ehsanghaffar)
