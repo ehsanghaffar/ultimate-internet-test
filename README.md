@@ -1,91 +1,228 @@
 # All-in-one Internet Test
 
-A lightweight Go application that performs a variety of internet and network checks (local network access, international access, ping, speed tests, interface listing, VPN detection, etc.). Designed to be easy to run locally for quick diagnostics.
+A comprehensive Go application for network diagnostics and internet connectivity testing. Performs parallel HTTP, speed, VPN detection, and ping tests with structured result storage and robust error handling.
 
 ## Features
 
-- Test local network access (LAN)
-- Test international network access (WAN)
-- Run basic ping checks
-- Measure internet speed (download/upload/latency) where applicable
-- List available network interfaces
-- Basic VPN detection checks (where possible)
-- Minimal dependencies; written in Go
+- **HTTP Testing**: Test HTTP/HTTPS connectivity with TLS information
+- **Speed Testing**: Measure download speed in Mbps
+- **VPN Detection**: Detect if connection uses VPN or proxy
+- **Ping Testing**: ICMP ping with packet loss statistics
+- **Parallel Execution**: All tests run concurrently for faster execution
+- **Structured Results**: Results saved to JSON with timestamps
+- **Error Resilience**: Individual test failures don't crash the application
+- **Type Safety**: Strongly-typed result structures
+- **Configuration Management**: Centralized config with sensible defaults
+- **Minimal Dependencies**: Only one external package (go-ping/ping)
 
-## Prerequisites
+## Quick Start
 
-- Go (1.18+ recommended)
+### Prerequisites
+
+- Go 1.19 or higher
 - Network access for tests
-- Some checks may require elevated privileges (for ICMP/ping or interface inspection)
+- Ping tests may require elevated privileges on Linux
 
-## Quick start
-
-Clone and run:
+### Installation
 
 ```bash
-git clone https://github.com/ghaffariidev/check-internet-tests.git
-cd check-internet-tests
+# Clone the repository
+git clone https://github.com/ehsanghaffar/all-internet-tests.git
+cd all-internet-tests
 
-# Run directly
-go run .
+# Build
+go build -o all-internet-tests
 
-# Or build and run binary
-go build -o check-internet-tests .
-./check-internet-tests
+# Run
+./all-internet-tests
 ```
 
-If the program supports a help flag, run:
+### Usage
 
 ```bash
-./check-internet-tests --help
+# Run all tests
+go run .
+
+# Build and execute binary
+go build && ./all-internet-tests
+
+# Run specific URL tests
+go run . https://example.com https://test.com
+
+# View results
+cat data.json
+```
+
+## Documentation
+
+- **[Architecture](docs/ARCHITECTURE.md)** - Design patterns, data flow, and system architecture
+- **[API Reference](docs/API.md)** - Complete API documentation for all packages
+- **[Development Guide](docs/DEVELOPMENT.md)** - Setup, building, testing, and extending
+- **[Troubleshooting](docs/TROUBLESHOOTING.md)** - Common issues and solutions
+
+## Project Structure
+
+```bash
+.
+├── config/              # Configuration management
+│   └── config.go        # Config struct, constants
+├── modules/             # Test implementations
+│   ├── httpTest.go      # HTTP connectivity tests
+│   ├── speedTest.go     # Speed measurement
+│   ├── checkVPN.go      # VPN/proxy detection
+│   └── pingTest.go      # ICMP ping tests
+├── utils/               # Shared utilities
+│   ├── structs.go       # Result data types
+│   ├── errors.go        # Error hierarchy
+│   └── storage.go       # JSON persistence
+├── docs/                # Documentation
+│   ├── ARCHITECTURE.md
+│   ├── API.md
+│   ├── DEVELOPMENT.md
+│   └── TROUBLESHOOTING.md
+├── main.go              # Application entry
+├── go.mod               # Module definition
+└── data.json            # Results (generated)
+```
+
+## Example Output
+
+```json
+{
+  "http_tests": [
+    {
+      "url": "https://www.google.com/",
+      "status": "200 OK",
+      "proto": "HTTP/2.0",
+      "tls_version": "771",
+      "response_length": 15678
+    }
+  ],
+  "speed_tests": [
+    {
+      "url": "https://google.com",
+      "download_mbps": 45.32,
+      "elapsed_time": "2.345s",
+      "bytes_received": 1048576
+    }
+  ],
+  "vpn_test": {
+    "status": "Not using VPN or proxy."
+  },
+  "ping_test": {
+    "url": "www.google.com",
+    "transmitted_packets": 5,
+    "received_packets": 5,
+    "loss_packets": 0
+  },
+  "timestamp": "2024-01-15T10:30:45Z"
+}
 ```
 
 ## Configuration
 
-- The repository includes a data.json file that contains default endpoints or settings used by the tests. Edit it to change targets or defaults.
-- Additional modules live under modules/ and helper functions under utils/.
+The application uses sensible defaults but can be customized:
 
-## Usage
-
-- Run the program (go run . or the built binary) and follow the on-screen output.
-- For automation, redirect output to a file:
-
-```bash
-./check-internet-tests > results.txt
+```go
+cfg := config.New()
+cfg.HTTPTimeout = 10 * time.Second
+cfg.PingCount = 10
+cfg.SpeedTestTimeout = 20 * time.Second
 ```
 
-- For tests that require low-level network access (ICMP/ping, interface queries), run with appropriate privileges if you encounter permission errors.
+See [Configuration Constants](docs/API.md#constants) for all options.
 
 ## Development
 
-- Implemented in Go. Use `go build`, `go run` and `go test` as usual.
-- To add features, create modules under modules/ and helpers under utils/.
-- Run `go mod tidy` after adding dependencies.
+### Build
+
+```bash
+go build -o all-internet-tests
+```
+
+### Test
+
+```bash
+# All tests
+go test ./...
+
+# With coverage
+go test -cover ./...
+
+# With race detector
+go test -race ./...
+```
+
+### Add Tests
+
+Tests are located in `*_test.go` files. See [Development Guide](docs/DEVELOPMENT.md) for patterns and examples.
 
 ## Contributing
 
-Contributions are welcome!
+Contributions are welcome! Please:
 
-1. Fork the repository.
-2. Create a branch for your feature or fix.
-3. Submit a pull request with a clear description and rationale.
-4. Add or update tests when applicable.
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/your-feature`
+3. Make changes with tests
+4. Run: `go test ./... && go build`
+5. Commit with clear messages
+6. Push and create a Pull Request
 
-## Authors and contact
+## Architecture Highlights
 
-- Original author: @ehsanghaffar (https://github.com/ehsanghaffar)
-- For feedback: ghafari.5000@gmail.com
+- **Modular Design**: Independent test modules with clear interfaces
+- **Type Safety**: Strongly-typed result structures for all tests
+- **Error Handling**: Custom error hierarchy with proper context
+- **Concurrency**: Parallel execution using goroutines and sync.WaitGroup
+- **Data Persistence**: Mutex-protected JSON I/O for thread safety
+- **Configuration**: Centralized config with all magic numbers as constants
 
-## Documentation
-
-Project documentation and more details may be available at: https://ehsanghaffarii.ir
-
-## License
-
-This project is licensed under the MIT License — see https://choosealicense.com/licenses/mit/ for details.
+See [Architecture Documentation](docs/ARCHITECTURE.md) for detailed information.
 
 ## Troubleshooting
 
-- If tests fail, verify local firewall settings and outbound internet access.
-- Speed test results vary due to ISP, server location, and network load.
-- If you need help understanding output, run with verbose/debug flags if available or open an issue including sample output and environment details.
+### Common Issues
+
+**Ping:Permission Denied**
+
+```bash
+# Linux: Use sudo
+sudo go run .
+
+# Or set capabilities
+sudo setcap cap_net_raw=+ep ./all-internet-tests
+./all-internet-tests
+```
+
+Network Timeouts
+
+```go
+cfg := config.New()
+cfg.HTTPTimeout = 15 * time.Second
+```
+
+**VPN Detection Fails**
+Use alternative IP detection service or check network connectivity.
+
+See [Troubleshooting Guide](docs/TROUBLESHOOTING.md) for more solutions.
+
+## Performance
+
+- Tests run in parallel for faster execution
+- Single atomic write to data.json per run
+- Configurable timeouts to prevent hanging
+- Minimal memory footprint with streaming I/O
+
+## License
+
+This project is licensed under the MIT License — see [LICENSE](https://choosealicense.com/licenses/mit/) for details.
+
+## Authors and Contact
+
+- **Original Author**: [@ehsanghaffar](https://github.com/ehsanghaffar)
+- **Email**: (mailto:ghafari.5000@gmail.com)
+
+## Resources
+
+- [Go Documentation](https://golang.org/doc/)
+- [Project Issues](https://github.com/ehsanghaffar/all-internet-tests/issues)
